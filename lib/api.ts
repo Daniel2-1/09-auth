@@ -12,13 +12,15 @@ export interface NotesResponse {
 
 export const fetchNotes = async (
   page: number,
-  query: string
+  query: string,
+  tag?: string | undefined
 ): Promise<NotesResponse> => {
   const response = await axios.get<NotesResponse>("/notes", {
     params: {
       page,
       perPage: 12,
       search: query,
+      tag
     },
     headers: {
       Authorization: `Bearer ${TOKEN}`,

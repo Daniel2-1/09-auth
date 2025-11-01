@@ -1,5 +1,8 @@
 import Link from "next/link";
 import css from "./Header.module.css";
+import { NOTES_FILTER_ALL } from "@/lib/constans";
+
+
 
 export default function Header() {
   return (
@@ -13,7 +16,7 @@ export default function Header() {
             <Link href="/">Home</Link>
           </li>
           <li>
-            <Link href="/notes">Notes</Link>
+            <Link href={`/notes/filter/${NOTES_FILTER_ALL}`}>Notes</Link>
           </li>
         </ul>
       </nav>
