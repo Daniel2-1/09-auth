@@ -12,35 +12,47 @@ interface Props {
 const NotePreview = ({ params }: Props) => {
   const { id } = params;
   const router = useRouter();
-  const { data } = useQuery({
-      queryKey: ["note", id],
-  queryFn: () => fetchNoteById(id),
-  refetchOnMount: false,
-  staleTime: 1000 * 60 * 5,
-  });
 
   const closeModal = useCallback(() => {
     router.back();
   }, [router]);
 
-  return (
-    <>
+  const { data, isPending, isError } = useQuery({
+    queryKey: ["note", id],
+    queryFn: () => fetchNoteById(id),
+    refetchOnMount: false,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  if (isPending) {
+    return (
       <Modal onClose={closeModal}>
-        <div>
-          <div>
-            {data && (
-              <>
-                <div>
-                  <h2>{data?.title}</h2>
-                </div>
-                <p>{data?.content}</p>
-                <p>{new Date(data?.createdAt).toLocaleString()}</p>
-              </>
-            )}
-          </div>
-        </div>
+        <p>Loading...</p>
       </Modal>
-    </>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Modal onClose={closeModal}>
+        <p>Something went wrong. Please try again later.</p>
+        <button onClick={closeModal}>Close</button>
+      </Modal>
+    );
+  }
+
+  return (
+    <Modal onClose={closeModal}>
+      {data && (
+        <div>
+          <h2>{data.title}</h2>
+          <p>{data.content}</p>
+          <p>{new Date(data.createdAt).toLocaleString()}</p>
+          <button onClick={closeModal}>Close</button>
+        </div>
+      )}
+    </Modal>
   );
 };
+
 export default NotePreview;

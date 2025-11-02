@@ -8,7 +8,7 @@ import NotePreview from "./NotePreview.client";
 
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function NoteDetails({ params }: Props) {

@@ -9,17 +9,18 @@ import Modal from "../../../../components/Modal/Modal";
 import NoteForm from "../../../../components/NoteForm/NoteForm";
 import { useDebouncedCallback } from "use-debounce";
 import css from "../../../../components/NotesPage/NotesPage.module.css";
-import { useParams } from "next/navigation";
 import NoNotes from "@/components/NoNotes/NoNotes";
 
-function NotesClient() {
+interface Props {
+  tag?: string;
+}
+
+function NotesClient({ tag }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [searchQuery, setQuery] = useState("");
-  const params = useParams();
-  const tag = params.slug?.[0] === "all" ? undefined : params.slug?.[0];
 
-  const { data, isSuccess, isPending } = useQuery({
+  const { data, isPending, isSuccess } = useQuery({
     queryKey: ["notes", page, searchQuery, tag],
     queryFn: () => fetchNotes(page, searchQuery, tag),
     placeholderData: keepPreviousData,
@@ -45,7 +46,7 @@ function NotesClient() {
         </button>
       </header>
       {data && data?.notes.length > 0 && <NoteList data={data?.notes} />}
-      { data?.notes.length === 0 && !isPending && <NoNotes />}
+      {data?.notes.length === 0 && !isPending && <NoNotes />}
       {isModalOpen && (
         <Modal onClose={onCloseModal}>
           <NoteForm onClose={onCloseModal} />
