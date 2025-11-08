@@ -5,10 +5,8 @@ import { useId } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNote } from "../../lib/api";
 import { NewNote } from "../../types/note";
+import { useRouter } from "next/navigation";
 
-interface NoteFormProps {
-  onClose: () => void;
-}
 
 const DisplayingErrorMessagesSchema = Yup.object().shape({
   title: Yup.string()
@@ -20,6 +18,8 @@ const DisplayingErrorMessagesSchema = Yup.object().shape({
     .oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"])
     .required("Required"),
 });
+
+
 
 interface FormValues {
   title: string;
@@ -33,9 +33,12 @@ const formValues: FormValues = {
   tag: "",
 };
 
-export default function NoteForm({ onClose }: NoteFormProps) {
+export default function NoteForm() {
   const isId = useId();
   const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const handleClose = () => router.push("/notes/filter/all")
 
   const { mutate: addNote, isPending } = useMutation({
     mutationFn: (contentText: NewNote) => createNote(contentText),
@@ -43,7 +46,7 @@ export default function NoteForm({ onClose }: NoteFormProps) {
       queryClient.invalidateQueries({
         queryKey: ["notes"],
       });
-      onClose();
+      router.push("/notes/filter/all")
     },
   });
 
@@ -102,7 +105,7 @@ export default function NoteForm({ onClose }: NoteFormProps) {
         </div>
 
         <div className={css.actions}>
-          <button onClick={onClose} type="button" className={css.cancelButton}>
+          <button onClick={handleClose} type="button" className={css.cancelButton}>
             Cancel
           </button>
           <button type="submit" className={css.submitButton} disabled={false}>

@@ -10,13 +10,14 @@ import NoteForm from "../../../../components/NoteForm/NoteForm";
 import { useDebouncedCallback } from "use-debounce";
 import css from "../../../../components/NotesPage/NotesPage.module.css";
 import NoNotes from "@/components/NoNotes/NoNotes";
+import Link from "next/link";
 
 interface Props {
   tag?: string;
 }
 
 function NotesClient({ tag }: Props) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [searchQuery, setQuery] = useState("");
 
@@ -32,7 +33,7 @@ function NotesClient({ tag }: Props) {
   }, 300);
 
   const totalPages = data?.totalPages || 1;
-  const onCloseModal = () => setIsModalOpen(false);
+  // const onCloseModal = () => setIsModalOpen(false);
 
   return (
     <div className={css.app}>
@@ -41,17 +42,18 @@ function NotesClient({ tag }: Props) {
         {totalPages > 1 && isSuccess && (
           <Pagination totalPages={totalPages} page={page} setPage={setPage} />
         )}
-        <button className={css.button} onClick={() => setIsModalOpen(true)}>
+        {/* <button className={css.button} onClick={() => setIsModalOpen(true)}>
           Create Note +
-        </button>
+        </button> */}
+        <Link href="/notes/action/create">Create</Link>
       </header>
       {data && data?.notes.length > 0 && <NoteList data={data?.notes} />}
       {data?.notes.length === 0 && !isPending && <NoNotes />}
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <Modal onClose={onCloseModal}>
-          <NoteForm onClose={onCloseModal} />
+          <NoteForm/>
         </Modal>
-      )}
+      )} */}
     </div>
   );
 }
