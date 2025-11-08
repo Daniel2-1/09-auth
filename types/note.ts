@@ -14,3 +14,8 @@ export interface NewNote {
 }
 
 
+export interface FormValues {
+  title: string;
+  content: string;
+  tag: string;
+}

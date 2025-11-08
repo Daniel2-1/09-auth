@@ -1,45 +1,34 @@
-'use client'
-import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
+"use client";
+
 import css from "./NoteForm.module.css";
-import * as Yup from "yup";
-import { useId } from "react";
+// import * as Yup from "yup";
+import { ChangeEvent, useId } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNote } from "../../lib/api";
-import { NewNote } from "../../types/note";
+import { FormValues, NewNote } from "../../types/note";
 import { useRouter } from "next/navigation";
+import { useNoteDraft } from "@/lib/store/noteStore";
+
+// const DisplayingErrorMessagesSchema = Yup.object().shape({
+//   title: Yup.string()
+//     .min(3, "Too Short!")
+//     .max(50, "Too Long!")
+//     .required("Required"),
+//   content: Yup.string().max(500, "Too Long"),
+//   tag: Yup.string()
+//     .oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"])
+//     .required("Required"),
+// });
 
 
-const DisplayingErrorMessagesSchema = Yup.object().shape({
-  title: Yup.string()
-    .min(3, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  content: Yup.string().max(500, "Too Long"),
-  tag: Yup.string()
-    .oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"])
-    .required("Required"),
-});
-
-
-
-interface FormValues {
-  title: string;
-  content: string;
-  tag: string;
-}
-
-const formValues: FormValues = {
-  title: "",
-  content: "",
-  tag: "",
-};
 
 export default function NoteForm() {
   const isId = useId();
   const queryClient = useQueryClient();
   const router = useRouter();
+  const { draft, setDraft, clearDraft} = useNoteDraft();
 
-  const handleClose = () => router.push("/notes/filter/all")
+  const handleClose = () => router.push("/notes/filter/all");
 
   const { mutate: addNote, isPending } = useMutation({
     mutationFn: (contentText: NewNote) => createNote(contentText),
@@ -47,73 +36,81 @@ export default function NoteForm() {
       queryClient.invalidateQueries({
         queryKey: ["notes"],
       });
-      router.push("/notes/filter/all")
+      router.push("/notes/filter/all");
+      clearDraft()
     },
   });
 
-  const handleSubmit = (
-    value: FormValues,
-    formikHelpers: FormikHelpers<FormValues>
-  ) => {
-    addNote({ content: value.content, title: value.title, tag: value.tag });
-    formikHelpers.resetForm();
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value} = e.target;
+    setDraft({...draft,[name]: value})
+  }
+
+  const handleSubmitTwo = (formData: FormData) => {
+    const data = Object.fromEntries(formData) as unknown as FormValues;
+    addNote({ content: data.content, title: data.title, tag: data.tag });
   };
+
   return (
-    <Formik
-      initialValues={formValues}
-      onSubmit={handleSubmit}
-      validationSchema={DisplayingErrorMessagesSchema}
-    >
-      <Form className={css.form}>
+    <>
+      <form className={css.form} action={handleSubmitTwo}>
         <div className={css.formGroup}>
           <label htmlFor={`${isId}-title`}>Title</label>
-          <Field
+          <input
             id={`${isId}-title`}
             type="text"
             name="title"
             className={css.input}
+            onChange={handleChange}
+            defaultValue={draft.title}
           />
-          <ErrorMessage name="title" component="p" className={css.error} />
+          {/* <ErrorMessage name="title" component="p" className={css.error} /> */}
         </div>
 
         <div className={css.formGroup}>
           <label htmlFor={`${isId}-content`}>Content</label>
-          <Field
-            as="textarea"
+          <textarea
             id={`${isId}-content`}
             name="content"
             rows={8}
             className={css.textarea}
+            onChange={handleChange}
+            defaultValue={draft.content}
           />
-          <ErrorMessage name="content" component="p" className={css.error} />
+          {/* <ErrorMessage name="content" component="p" className={css.error} /> */}
         </div>
 
         <div className={css.formGroup}>
           <label htmlFor={`${isId}-tag`}>Tag</label>
-          <Field
-            as="select"
+          <select
             id={`${isId}-tag`}
             name="tag"
             className={css.select}
+            onChange={handleChange}
+            defaultValue={draft.tag}
           >
             <option value="Todo">Todo</option>
             <option value="Work">Work</option>
             <option value="Personal">Personal</option>
             <option value="Meeting">Meeting</option>
             <option value="Shopping">Shopping</option>
-          </Field>
-          <ErrorMessage name="tag" component="p" className={css.error} />
+          </select>
+          {/* <ErrorMessage name="tag" component="p" className={css.error} /> */}
         </div>
 
         <div className={css.actions}>
-          <button onClick={handleClose} type="button" className={css.cancelButton}>
+          <button
+            onClick={handleClose}
+            type="button"
+            className={css.cancelButton}
+          >
             Cancel
           </button>
           <button type="submit" className={css.submitButton} disabled={false}>
             {isPending ? "Creating.." : "Create note"}
           </button>
         </div>
-      </Form>
-    </Formik>
+      </form>
+    </>
   );
 }
