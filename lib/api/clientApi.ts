@@ -1,9 +1,9 @@
-import axios from "axios";
+// import axios from "axios";
 import { NewNote, Note } from "../../types/note";
 import { User } from "@/types/user";
 import { nextServer } from "./api";
 // axios.defaults.baseURL = "https://notehub-public.goit.study/api";
-const TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
+// const TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
 export interface NotesResponse {
   notes: Note[];
@@ -39,10 +39,10 @@ export const createNote = async (newNote: NewNote) => {
 };
 
 export const deleteNote = async (noteId: string) => {
-  const response = await axios.delete<Note>(`/notes/${noteId}`, {
-    headers: {
-      Authorization: `Bearer ${TOKEN}`,
-    },
+  const response = await nextServer.delete<Note>(`/notes/${noteId}`, {
+    // headers: {
+    //   Authorization: `Bearer ${TOKEN}`,
+    // },
   });
   return response.data;
 };
