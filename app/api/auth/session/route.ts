@@ -22,6 +22,8 @@ export async function GET() {
         },
       });
 
+      console.log(apiRes)
+
       const setCookie = apiRes.headers["set-cookie"];
 
       if (setCookie) {

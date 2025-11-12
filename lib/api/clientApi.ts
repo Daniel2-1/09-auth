@@ -3,7 +3,7 @@ import axios from "axios";
 import { NewNote, Note } from "../../types/note";
 import { User } from "@/types/user";
 import { nextServer } from "./api";
-axios.defaults.baseURL = "https://notehub-public.goit.study/api";
+// axios.defaults.baseURL = "https://notehub-public.goit.study/api";
 const TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
 export interface NotesResponse {
@@ -19,7 +19,7 @@ export const fetchNotes = async (
   query: string,
   tag?: string | undefined
 ): Promise<NotesResponse> => {
-  const response = await nextServer.get<NotesResponse>("/notes", {
+  const response = await nextServer.get<NotesResponse>("/api/notes", {
     params: {
       page,
       perPage: 12,
