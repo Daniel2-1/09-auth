@@ -30,10 +30,10 @@ export const fetchNotes = async (
 };
 
 export const createNote = async (newNote: NewNote) => {
-  const response = await axios.post<Note>("/notes", newNote, {
-    headers: {
-      Authorization: `Bearer ${TOKEN}`,
-    },
+  const response = await nextServer.post<Note>("/notes", newNote, {
+    // headers: {
+    //   Authorization: `Bearer ${TOKEN}`,
+    // },
   });
   return response.data;
 };
@@ -48,10 +48,10 @@ export const deleteNote = async (noteId: string) => {
 };
 
 export const fetchNoteById = async (noteId: string) => {
-  const response = await axios.get<Note>(`/notes/${noteId}`, {
-    headers: {
-      Authorization: `Bearer ${TOKEN}`,
-    },
+  const response = await nextServer.get<Note>(`/notes/${noteId}`, {
+    // headers: {
+    //   Authorization: `Bearer ${TOKEN}`,
+    // },
   });
   return response.data;
 };
