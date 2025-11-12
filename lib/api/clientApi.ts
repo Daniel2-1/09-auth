@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import { NewNote, Note } from "../../types/note";
 import { User } from "@/types/user";
@@ -11,9 +10,6 @@ export interface NotesResponse {
   totalPages: number;
 }
 
-
-
-
 export const fetchNotes = async (
   page: number,
   query: string,
@@ -24,7 +20,7 @@ export const fetchNotes = async (
       page,
       perPage: 12,
       search: query,
-      tag
+      tag,
     },
     // headers: {
     //   Authorization: `Bearer ${TOKEN}`,
@@ -70,7 +66,6 @@ export const register = async (data: RegisterRequest) => {
   const res = await nextServer.post<User>("/auth/register", data);
   return res.data;
 };
-
 
 export type LoginRequest = {
   email: string;
