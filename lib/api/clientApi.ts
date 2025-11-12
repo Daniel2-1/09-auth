@@ -26,9 +26,9 @@ export const fetchNotes = async (
       search: query,
       tag
     },
-    headers: {
-      Authorization: `Bearer ${TOKEN}`,
-    },
+    // headers: {
+    //   Authorization: `Bearer ${TOKEN}`,
+    // },
   });
   return response.data;
 };
