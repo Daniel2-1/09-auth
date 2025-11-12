@@ -1,11 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-const isLocal = process.env.NODE_ENV === "development";
-
-const baseURL = isLocal
-  ? "http://localhost:3000/api"        
-  : "https://notehub-api.goit.study";  
-
+const baseURL = process.env.NEXT_PUBLIC_API_URL + '/api'; 
 
 export const nextServer = axios.create({
   baseURL,

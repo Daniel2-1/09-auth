@@ -16,13 +16,11 @@ export async function GET() {
     }
 
     if (refreshToken) {
-      const apiRes = await api.get("auth/session", {
+      const apiRes = await api.get("/auth/session", {
         headers: {
           Cookie: cookieStore.toString(),
         },
       });
-
-      console.log(apiRes)
 
       const setCookie = apiRes.headers["set-cookie"];
 
@@ -42,7 +40,7 @@ export async function GET() {
           if (parsed.refreshToken)
             cookieStore.set("refreshToken", parsed.refreshToken, options);
         }
-        return NextResponse.json({ success: true }, { status: 200 });
+        return NextResponse.json({ success: true }, { status: 200, });
       }
     }
     return NextResponse.json({ success: false }, { status: 200 });

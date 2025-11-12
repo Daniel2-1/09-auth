@@ -15,7 +15,7 @@ export const fetchNotes = async (
   query: string,
   tag?: string | undefined
 ): Promise<NotesResponse> => {
-  const response = await nextServer.get<NotesResponse>("/api/notes", {
+  const response = await nextServer.get<NotesResponse>("/notes", {
     params: {
       page,
       perPage: 12,
