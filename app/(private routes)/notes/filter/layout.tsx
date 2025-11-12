@@ -3,7 +3,7 @@ interface Props {
   sidebar: React.ReactNode;
 }
 
-import css from '../../../components/SidebarNotes/SidebarNotes.module.css'
+import css from '@/components/SidebarNotes/SidebarNotes.module.css'
 
 const Sidebar = ({ sidebar, children }: Props) => {
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import css from "./Header.module.css";
 import { NOTES_FILTER_ALL } from "@/lib/constans";
+import AuthNavigation from "../AuthNavigation/AuthNavigation";
 
 
 
@@ -18,6 +19,7 @@ export default function Header() {
           <li>
             <Link href={`/notes/filter/${NOTES_FILTER_ALL}`}>Notes</Link>
           </li>
+          <AuthNavigation/>
         </ul>
       </nav>
     </header>

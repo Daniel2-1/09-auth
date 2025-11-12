@@ -1,6 +1,6 @@
 import { NOTES_FILTER_ALL, NOTES_FILTER_CATEGORIES } from "@/lib/constans";
 import Link from "next/link";
-import css from '../../../../components/SidebarNotes/SidebarNotes.module.css'
+import css from '@/components/SidebarNotes/SidebarNotes.module.css'
 
 const Sidebar = () => (
   <ul className={css.menuList}>
