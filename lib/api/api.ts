@@ -3,8 +3,8 @@ import axios from "axios";
 const isLocal = process.env.NODE_ENV === "development";
 
 const baseURL = isLocal
-  ? "http://localhost:3000/api"        // при разработке
-  : "https://notehub-api.goit.study";  // при продакшене (Vercel)
+  ? "http://localhost:3000/api"        
+  : "https://notehub-api.goit.study";  
 
 
 export const nextServer = axios.create({
