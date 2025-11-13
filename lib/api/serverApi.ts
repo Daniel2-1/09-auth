@@ -28,8 +28,8 @@ interface FetchNotesResponse {
 const PER_PAGE = 12;
 
 export async function fetchNotes(
-  query: string,
   page: number,
+  query: string,
   category?: string
 ): Promise<FetchNotesResponse> {
   const cookieStore = await cookies();
