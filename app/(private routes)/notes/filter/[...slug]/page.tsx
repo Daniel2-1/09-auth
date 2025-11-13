@@ -45,8 +45,6 @@ export default async function Notes({ params }: Props) {
     queryFn: () => fetchNotes(1, "", tag),
   });
 
-
-
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <NotesClient tag={tag} />
