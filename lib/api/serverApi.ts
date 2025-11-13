@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { nextServer } from "./api";
 import { User } from "@/types/user";
 import { Note } from "@/types/note";
+import 'server-only';
 
 export const checkServerSession = async () => {
   const cookieStore = await cookies();
